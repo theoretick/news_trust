@@ -1,0 +1,30 @@
+FROM newstrust-base
+
+ENV APP_NAME news_trust
+ENV APP_PATH /srv/app/$APP_NAME
+
+ARG app_env
+
+EXPOSE 9292
+
+VOLUME $APP_PATH
+WORKDIR $APP_PATH
+ADD . $APP_PATH/
+
+# Do not generate documentation when installing gems and fix shebang
+# lines
+RUN echo "gem: --no-rdoc --no-ri --env-shebang" >> "$HOME/.gemrc"
+
+# Required to install dep and rake tasks
+RUN gem install rake dep pry rack:1.6.0 shotgun
+
+# install all dependencies
+RUN dep install
+
+# Tell pry to use `more` as the pager because the installed
+# version of `less` does not support passing the `-R` which
+# is used by pry.
+ENV PAGER="more"
+
+# Run application
+CMD ["puma", "--bind", "tcp://0.0.0.0", "--port", "9292"]

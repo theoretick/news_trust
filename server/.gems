@@ -1,0 +1,5 @@
+cuba -v 3.8.0
+puma -v 3.4.0
+rack-contrib -v 1.4.0
+redis -v 3.3.2
+typhoeus -v 1.0.2
