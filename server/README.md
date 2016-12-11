@@ -4,6 +4,8 @@
 ------
 
 * [What](#what)
+* [Server](#server)
+* [Testing](#testing)
 * [Architecture](#architecture)
 
 -----
@@ -11,6 +13,21 @@
 ## What
 
 NewsTrust is an app and chrome extension for tracking confidence in news articles.
+
+## Server
+
+```bash
+# build case container
+docker build -t newstrust-base ops/newstrust-base/.
+
+docker-compose up
+```
+
+## Testing
+
+```
+docker-compose -f docker-compose.test.yml up
+```
 
 ## Architecture
 
