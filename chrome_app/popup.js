@@ -1,18 +1,25 @@
-document.addEventListener('DOMContentLoaded', function() {
-  var reportPageButton = document.getElementById('report_page');
-  reportPageButton.addEventListener('click', function() {
+// popup.js
 
-    chrome.tabs.getSelected(null, function(tab) {
-      var form = document.createElement('form');
-      form.action = 'http://192.168.99.100:9292/flags';
-      form.method = 'post';
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'url';
-      input.value = tab.url;
-      form.appendChild(input);
-      document.body.appendChild(form);
-      form.submit();
+document.addEventListener('DOMContentLoaded', () => {
+  let reportPageButton = document.getElementById('report_page');
+
+  reportPageButton.addEventListener('click', () => {
+    chrome.tabs.getSelected(null, (tab) => {
+      chrome.tabs.query(
+        { active: true, currentWindow: true },
+        (tabs) => {
+          let current_tab = tabs[0]
+
+          chrome.runtime.sendMessage({
+            "record_page_flag": {
+              "url": tab.url,
+              "tab_id": current_tab.id
+            }
+          }, () => {
+            // Close popup on message send
+            window.close();
+          });
+        })
     });
   }, false);
 }, false);
