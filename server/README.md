@@ -6,6 +6,8 @@
 * [What](#what)
 * [Server](#server)
 * [Testing](#testing)
+  - [Creating Page views](#create-pageview)
+  - [Creating Page flags](#create-flag)
 * [Architecture](#architecture)
 
 -----
@@ -27,6 +29,20 @@ docker-compose up
 
 ```
 docker-compose -f docker-compose.test.yml up
+```
+
+### Create pageview
+
+```bash
+curl "http://$(docker-machine ip):9292/page_views" -H 'Content-Type: application/json' --data '{"url":"https://news.ycombinator.com/","uuid":"cb75ee7e83ab808084e244ae23175f625291a9df63ad0754957754b5fd9479"}'
+{"rating":"A","view_count":1,"flag_count":0}
+```
+
+### Create flag
+
+```bash
+curl "http://$(docker-machine ip):9292/flags" -H 'Content-Type: application/json' --data '{"url":"https://news.ycombinator.com/","uuid":"cb75ee7e83ab808084e244ae23175f625291a9df63ad0754957754b5fd9479"}'
+{"rating":"A","view_count":1,"flag_count":1}
 ```
 
 ## Architecture
